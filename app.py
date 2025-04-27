@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///meal_tracker.db'
@@ -131,6 +132,8 @@ def set_goal(user_id):
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
+        if not os.path.exists('meal_tracker.db'):
+            db.create_all()
     app.run()
+
 
