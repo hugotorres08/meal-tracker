@@ -4,7 +4,8 @@ from datetime import date
 import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///meal_tracker.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://meal_tracker_evev_user:7jAWj7S6uyAlFVHQdFeiT9nNatz63CEV@dpg-d074msk9c44c739mg3s0-a.frankfurt-postgres.render.com/meal_tracker_evev')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -131,9 +132,6 @@ def set_goal(user_id):
     return redirect(url_for('daily_summary', user_id=user_id, day=today))
 
 if __name__ == '__main__':
-    with app.app_context():
-        if not os.path.exists('meal_tracker.db'):
-            db.create_all()
     app.run()
 
 
